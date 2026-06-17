@@ -174,3 +174,37 @@ canvas{
 .brand-logos .brand-logo img{
     object-fit: contain;
 }
+
+.hero-img-container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.hero-img{
+    position: relative;
+    width: 100%;    
+    transform-style: transform,opacity;
+}
+
+@media (max-width: 1000px) {
+    h1{
+        font-size: 2rem;
+    }
+
+
+nav .nav-links,
+nav .nav-buttons{
+    display: none;
+}
+
+.header h1,
+.brand-logos,
+.hero-img-container{
+    width: calc(100% - 4rem);
+}
+}
