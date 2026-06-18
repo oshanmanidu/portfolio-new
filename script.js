@@ -32,9 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setCanvasSize();
 
-  const frameCount = 12;
+  const frameCount = 310;
   const currentFrame = (index) =>
-    `/frames/frame_${(index + 1).toString().padStart(4, "0")}.JPG`;
+    `/frames/frame_${(index + 1).toString().padStart(4, "0")}.jpg`;
 
   let images = [];
   let videoFrames = { frame: 0 };
