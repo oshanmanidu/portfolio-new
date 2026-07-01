@@ -43,64 +43,182 @@ a{
     color: var(--fg);
 }
 
-.btn{
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.25rem;
-}
-
-.btn-primary{
-    background-color: var(--bg);
-}
-.btn-primary a{
-    color: var(--fg);
-}
-.btn-secondary{
-    background-color: var(--fg);
-}
-.btn-secondary a{
-    color: var(--bg);
-}
-
-nav{
+/* Premium Floating Transparent Navbar & Neon Buttons */
+nav {
     position: fixed;
-    width: 100vw;
-    padding: 1.5rem 2rem;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 3rem);
+    max-width: 1200px;
+    padding: 0.6rem 2rem;
     display: flex;
     align-items: center;
-    gap: 2rem;
-    will-change: opacity;
-    z-index: 2;
+    justify-content: space-between;
+    background: transparent;
+    z-index: 100;
+    will-change: opacity, transform;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-nav > div{
+nav:hover {
+    background: transparent;
+}
+
+nav > div {
     flex: 1;
 }
 
-nav .nav-links{
+nav .nav-links {
     display: flex;
-    gap: 3rem;
+    align-items: center;
+    gap: 2.5rem;
 }
 
-nav .logo{
+nav .nav-links a {
+    position: relative;
+    color: #b0bec5;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* Neon text hover */
+nav .nav-links a:hover {
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6),
+                 0 0 16px rgba(0, 255, 255, 0.2);
+}
+
+nav .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #00ffff;
+    box-shadow: 0 0 8px #00ffff;
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+}
+
+nav .nav-links a:hover::after {
+    width: 80%;
+}
+
+.chevron-icon {
+    transition: transform 0.3s ease;
+    stroke: currentColor;
+}
+
+nav .nav-links a:hover .chevron-icon {
+    transform: translateY(2px);
+    stroke: #00ffff;
+    filter: drop-shadow(0 0 3px rgba(0, 255, 255, 0.8));
+}
+
+nav .logo {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-nav .logo img{
-    width: 2rem;
+nav .logo img {
+    height: 2.2rem;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.2));
+    transition: filter 0.3s ease;
 }
 
-nav .logo a{
-    text-transform: none;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.5rem;
+nav .logo img:hover {
+    filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.6));
 }
 
-nav .nav-buttons{
+nav .nav-buttons {
     display: flex;
-    gap: 1.5rem;
+    align-items: center;
+    gap: 1.25rem;
     justify-content: flex-end;
+}
+
+/* Neon Watch Demo Button */
+.btn-watch-demo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-watch-demo:hover {
+    background: rgba(0, 240, 255, 0.1);
+    border-color: #00f0ff;
+    color: #00f0ff;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+.play-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    color: #0a0f1e;
+    transition: all 0.3s ease;
+}
+
+.play-badge svg {
+    width: 10px;
+    height: 10px;
+    margin-left: 1px; /* visual alignment */
+}
+
+.btn-watch-demo:hover .play-badge {
+    background: #00f0ff;
+    color: #0a0f1e;
+    box-shadow: 0 0 10px #00f0ff;
+}
+
+/* Neon Get Started Button */
+.btn-get-started {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 1.5rem;
+    background: linear-gradient(90deg, #00ffff, #00ff66);
+    border-radius: 50px;
+    color: #0a0f1e;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.45);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-get-started:hover {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.7),
+                0 0 10px rgba(0, 255, 102, 0.4);
+    transform: translateY(-1px);
 }
 
 section{
@@ -249,10 +367,19 @@ canvas{
     }
 
 
-nav .nav-links,
-nav .nav-buttons{
-    display: none;
-}
+nav {
+        width: auto;
+        min-width: 120px;
+        padding: 0.5rem 1.5rem;
+        top: 1rem;
+    }
+    nav .logo img {
+        height: 1.8rem;
+    }
+    nav .nav-links,
+    nav .nav-buttons{
+        display: none;
+    }
 
 .header h1,
 .brand-logos,

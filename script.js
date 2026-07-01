@@ -117,12 +117,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // Header Animation
         if (progress <= 0.25) {
           const zProgress = progress / 0.25;
-          const translateZ = zProgress * -500;
+          const translateZ = zProgress * 800; // Zoom in (positive translateZ)
 
           let opacity = 1;
-          if (progress >= 0.2) {
-            const fadeProgress = Math.min((progress - 0.2) / (0.25 - 0.2), 1);
-            opacity = 1 - fadeProgress;
+          if (progress >= 0.1) {
+            const fadeProgress = Math.min((progress - 0.1) / (0.25 - 0.1), 1);
+            opacity = 1 - fadeProgress; // Fade out as it zooms in
           }
 
           gsap.set(header, {
