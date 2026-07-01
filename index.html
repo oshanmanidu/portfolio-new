@@ -91,6 +91,589 @@
             <div class="hero-img"><img src="dashboard.png" alt=""></div>
         </div>
     </section>
+    </section>
+
+    <!-- Interactive Cyberpunk HUD Section -->
+    <section class="cyberpunk-hud-section" id="about-hud">
+        <!-- HUD Background Elements -->
+        <div class="hud-bg-grid"></div>
+        <div class="hud-bg-scanlines"></div>
+        <div class="hud-bg-radar"></div>
+        <div class="hud-bg-particles-container">
+            <canvas id="hud-particles-canvas"></canvas>
+        </div>
+
+        <!-- Outer HUD Framework Borders -->
+        <div class="hud-outer-frame">
+            <div class="hud-frame-corner top-left"></div>
+            <div class="hud-frame-corner top-right"></div>
+            <div class="hud-frame-corner bottom-left"></div>
+            <div class="hud-frame-corner bottom-right"></div>
+            <div class="hud-frame-line top"></div>
+            <div class="hud-frame-line bottom"></div>
+            <div class="hud-bottom-deco">CODE_EXECUTION: SUCCESS</div>
+        </div>
+
+        <div class="hud-grid-wrapper">
+            <!-- Left Sidebar -->
+            <div class="hud-sidebar left">
+                <!-- User Info Panel -->
+                <div class="hud-panel user-info-panel">
+                    <div class="panel-header">SYSTEM USER ACCESS</div>
+                    <div class="panel-body">
+                        <div class="info-row"><span class="label">USER:</span> <span class="val text-glow-green">OSHANMANIDU</span></div>
+                        <div class="info-row"><span class="label">PROFILE:</span> <span class="val">CREATIVE + TECH PROFESSIONAL</span></div>
+                        <div class="info-row"><span class="label">STATUS:</span> <span class="val blinker-text">ALWAYS LEARNING</span></div>
+                        <div class="info-row"><span class="label">MODE:</span> <span class="val text-glow-cyan">MULTI-SKILLED</span></div>
+                    </div>
+                </div>
+
+                <!-- Code Scroll Panel -->
+                <div class="hud-panel code-scroll-panel">
+                    <div class="panel-header">CODE_STREAM.LOG</div>
+                    <div class="panel-body pre-wrap">
+                        <pre><code id="code-stream-content">struct group_info *groups_alloc(int gidsetsize){
+    struct group_info *group_info;
+    int nblocks;
+    int i;
+    nblocks = (gidsetsize + NGROUPS_PER_BLOCK - 1) / NGROUPS_PER_BLOCK;
+    /* Make sure we always allocate at least one indirect block pointer */
+    nblocks = nblocks ? : 1;
+    group_info = kmalloc(sizeof(*group_info) + nblocks*sizeof(gid_t *), GFP_USER);
+    if (!group_info)
+        return NULL;
+    group_info->ngroups = gidsetsize;
+    group_info->nblocks = nblocks;
+    atomic_set(&group_info->usage, 1);
+    if (gidsetsize <= NGROUPS_SMALL)
+        group_info->small_block = group_info->small_block;
+    else {
+        for (i = 0; i < nblocks; i++) {
+            gid_t *b;
+            b = (void *)__get_free_page(GFP_USER);
+            if (!b)
+                goto out_undo_partial_alloc;
+            group_info->blocks[i] = b;
+        }
+    }
+    return group_info;
+out_undo_partial_alloc:
+    while (--i >= 0) {
+        free_page((unsigned long)group_info->blocks[i]);
+    }
+    kfree(group_info);
+    return NULL;
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Terminal Panel -->
+                <div class="hud-panel terminal-panel">
+                    <div class="panel-header">TERMINAL CONSOLE</div>
+                    <div class="panel-body">
+                        <div class="terminal-container">
+                            <div class="terminal-line"><span class="prompt">&gt;</span> <span class="typed-cmd-1"></span></div>
+                            <div class="terminal-line response-1 response-line text-glow-green"></div>
+                            <div class="terminal-line"><span class="prompt">&gt;</span> <span class="typed-cmd-2"></span></div>
+                            <div class="terminal-line response-2 response-line"></div>
+                            <div class="terminal-line"><span class="prompt">&gt;</span> <span class="typed-cmd-3"></span></div>
+                            <div class="terminal-line response-3 response-line text-glow-cyan"></div>
+                            <div class="terminal-line"><span class="prompt">&gt;</span> <span class="typed-cmd-4"></span></div>
+                            <div class="terminal-line response-4 response-line"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Brand Ecosystem -->
+                <div class="hud-panel ecosystem-panel">
+                    <div class="panel-header">PERSONAL BRAND ECOSYSTEM</div>
+                    <div class="panel-body">
+                        <div class="eco-item">
+                            <span class="eco-name">OSHANMANIDU PHOTOGRAPHY</span>
+                            <div class="eco-status">
+                                <span class="status-box active"></span>
+                                <span class="status-box active"></span>
+                                <span class="status-box active"></span>
+                            </div>
+                        </div>
+                        <div class="eco-item">
+                            <span class="eco-name">MR_OSH</span>
+                            <div class="eco-status">
+                                <span class="status-box active"></span>
+                                <span class="status-box active"></span>
+                                <span class="status-box active"></span>
+                            </div>
+                        </div>
+                        <div class="eco-item">
+                            <span class="eco-name">EYELENSIA</span>
+                            <div class="eco-status">
+                                <span class="status-box active"></span>
+                                <span class="status-box active"></span>
+                                <span class="status-box active"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Column: Network Graph -->
+            <div class="hud-center-column">
+                <div class="network-container" id="network-graph">
+                    <!-- SVG Overlay for Connecting Lines -->
+                    <svg class="network-svg" id="network-svg" width="100%" height="100%">
+                        <defs>
+                            <linearGradient id="grad-teal" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.2"/>
+                                <stop offset="100%" stop-color="#00f0ff" stop-opacity="0.8"/>
+                            </linearGradient>
+                            <linearGradient id="grad-pink" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff007f" stop-opacity="0.2"/>
+                                <stop offset="100%" stop-color="#ff007f" stop-opacity="0.8"/>
+                            </linearGradient>
+                            <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#a855f7" stop-opacity="0.2"/>
+                                <stop offset="100%" stop-color="#a855f7" stop-opacity="0.8"/>
+                            </linearGradient>
+                            <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#0066ff" stop-opacity="0.2"/>
+                                <stop offset="100%" stop-color="#0066ff" stop-opacity="0.8"/>
+                            </linearGradient>
+                            <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#00ff66" stop-opacity="0.2"/>
+                                <stop offset="100%" stop-color="#00ff66" stop-opacity="0.8"/>
+                            </linearGradient>
+                            <linearGradient id="grad-magenta" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff0055" stop-opacity="0.2"/>
+                                <stop offset="100%" stop-color="#ff0055" stop-opacity="0.8"/>
+                            </linearGradient>
+                            
+                            <!-- Filters for Glows -->
+                            <filter id="glow-teal" x="-30%" y="-30%" width="160%" height="160%">
+                                <feGaussianBlur stdDeviation="5" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                            <filter id="glow-pink" x="-30%" y="-30%" width="160%" height="160%">
+                                <feGaussianBlur stdDeviation="5" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                            <filter id="glow-purple" x="-30%" y="-30%" width="160%" height="160%">
+                                <feGaussianBlur stdDeviation="5" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                            <filter id="glow-blue" x="-30%" y="-30%" width="160%" height="160%">
+                                <feGaussianBlur stdDeviation="5" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                            <filter id="glow-green" x="-30%" y="-30%" width="160%" height="160%">
+                                <feGaussianBlur stdDeviation="5" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                            <filter id="glow-magenta" x="-30%" y="-30%" width="160%" height="160%">
+                                <feGaussianBlur stdDeviation="5" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        
+                        <!-- Static Background connection lines -->
+                        <g class="connections-group">
+                            <path class="conn-line conn-photography" stroke="url(#grad-teal)" stroke-width="1.5" fill="none" />
+                            <path class="conn-line conn-software" stroke="url(#grad-blue)" stroke-width="1.5" fill="none" />
+                            <path class="conn-line conn-network" stroke="url(#grad-teal)" stroke-width="1.5" fill="none" />
+                            <path class="conn-line conn-osh" stroke="url(#grad-pink)" stroke-width="1.5" fill="none" />
+                            <path class="conn-line conn-eyelensia" stroke="url(#grad-purple)" stroke-width="1.5" fill="none" />
+                            <path class="conn-line conn-cisco" stroke="url(#grad-magenta)" stroke-width="1.5" fill="none" />
+                            <path class="conn-line conn-cloud" stroke="url(#grad-blue)" stroke-width="1.5" fill="none" />
+                            <path class="conn-line conn-solver" stroke="url(#grad-green)" stroke-width="1.5" fill="none" />
+                            <path class="conn-line conn-devops" stroke="url(#grad-purple)" stroke-width="1.5" fill="none" />
+                        </g>
+                        
+                        <!-- Pulse Overlay Paths -->
+                        <g class="pulses-group">
+                            <path class="conn-pulse conn-photography" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#glow-teal)" />
+                            <path class="conn-pulse conn-software" stroke="#0066ff" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#glow-blue)" />
+                            <path class="conn-pulse conn-network" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#glow-teal)" />
+                            <path class="conn-pulse conn-osh" stroke="#ff007f" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#glow-pink)" />
+                            <path class="conn-pulse conn-eyelensia" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#glow-purple)" />
+                            <path class="conn-pulse conn-cisco" stroke="#ff0055" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#glow-magenta)" />
+                            <path class="conn-pulse conn-cloud" stroke="#0066ff" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#glow-blue)" />
+                            <path class="conn-pulse conn-solver" stroke="#00ff66" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#glow-green)" />
+                            <path class="conn-pulse conn-devops" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#glow-purple)" />
+                        </g>
+                    </svg>
+
+                    <!-- Center Hub Profile Avatar -->
+                    <div class="center-profile-hub">
+                        <!-- Concentric Rotating HUD Rings -->
+                        <div class="ring outer-ring ring-cyan"></div>
+                        <div class="ring mid-ring ring-dashed ring-blue"></div>
+                        <div class="ring inner-ring ring-glow ring-cyan"></div>
+                        
+                        <div class="profile-avatar">
+                            <img src="public/cyberpunk_profile.png" alt="Oshan Manidu">
+                            <div class="avatar-overlay-text">"Who Am I"</div>
+                        </div>
+                    </div>
+
+                    <!-- Surrounding Node Cards -->
+                    <!-- Card 1: Photography -->
+                    <div class="node-card card-photography teal-theme" data-node="photography">
+                        <svg class="card-border-svg" width="100%" height="100%">
+                            <rect class="card-border-rect" x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="10" fill="none" stroke="#00f0ff" stroke-width="1.5" />
+                        </svg>
+                        <div class="card-inner">
+                            <div class="card-header-area">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                                </div>
+                                <div class="card-title">
+                                    <h3>OSHAN MANIDU PHOTOGRAPHY</h3>
+                                </div>
+                            </div>
+                            <div class="card-body-area">
+                                <ul class="typing-target">
+                                    <li>Photography</li>
+                                    <li>Photo Editing</li>
+                                    <li>Visual Storytelling</li>
+                                    <li>Branding Shoots</li>
+                                    <li>Event Photography</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Software Engineer -->
+                    <div class="node-card card-software blue-theme" data-node="software">
+                        <svg class="card-border-svg" width="100%" height="100%">
+                            <rect class="card-border-rect" x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="10" fill="none" stroke="#0066ff" stroke-width="1.5" />
+                        </svg>
+                        <div class="card-inner">
+                            <div class="card-header-area">
+                                <div class="card-icon image-icon">
+                                    <img src="logos/NSBM logo.png" alt="NSBM" style="filter: brightness(0) invert(1);">
+                                </div>
+                                <div class="card-title">
+                                    <h3>SOFTWARE ENGINEER</h3>
+                                </div>
+                            </div>
+                            <div class="card-body-area">
+                                <ul class="typing-target">
+                                    <li>Full Stack Development</li>
+                                    <li>Problem Solving</li>
+                                    <li>System Design</li>
+                                    <li>APIs & Integration</li>
+                                    <li>Clean Code</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Network Technician -->
+                    <div class="node-card card-network teal-theme" data-node="network">
+                        <svg class="card-border-svg" width="100%" height="100%">
+                            <rect class="card-border-rect" x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="10" fill="none" stroke="#00f0ff" stroke-width="1.5" />
+                        </svg>
+                        <div class="card-inner">
+                            <div class="card-header-area">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M12 8v8M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path></svg>
+                                </div>
+                                <div class="card-title">
+                                    <h3>NETWORK TECHNICIAN</h3>
+                                    <span class="subtitle">NVQ LEVEL 4</span>
+                                </div>
+                            </div>
+                            <div class="card-body-area">
+                                <ul class="typing-target">
+                                    <li>Network Installation</li>
+                                    <li>Troubleshooting</li>
+                                    <li>Routing & Switching</li>
+                                    <li>Firewall Configuration</li>
+                                    <li>Maintenance & Support</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: mr_osh -->
+                    <div class="node-card card-osh pink-theme" data-node="osh">
+                        <svg class="card-border-svg" width="100%" height="100%">
+                            <rect class="card-border-rect" x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="10" fill="none" stroke="#ff007f" stroke-width="1.5" />
+                        </svg>
+                        <div class="card-inner">
+                            <div class="card-header-area">
+                                <div class="card-icon image-icon text-logo-container">
+                                    <span class="custom-title-osh-logo">mr_osh</span>
+                                </div>
+                                <div class="card-title">
+                                    <h3 class="custom-title-osh">mr_osh</h3>
+                                </div>
+                            </div>
+                            <div class="card-body-area">
+                                <ul class="typing-target">
+                                    <li>Videography</li>
+                                    <li>Video Editing</li>
+                                    <li>Cinematic Visuals</li>
+                                    <li>Reels & Shorts</li>
+                                    <li>YouTube Content</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Eyelensia -->
+                    <div class="node-card card-eyelensia purple-theme" data-node="eyelensia">
+                        <svg class="card-border-svg" width="100%" height="100%">
+                            <rect class="card-border-rect" x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="10" fill="none" stroke="#a855f7" stroke-width="1.5" />
+                        </svg>
+                        <div class="card-inner">
+                            <div class="card-header-area">
+                                <div class="card-icon image-icon">
+                                    <img src="logos/ey.png" alt="Eyelensia">
+                                </div>
+                                <div class="card-title">
+                                    <h3>EYELENSIA</h3>
+                                    <span class="subtitle">ARCHITECTURE CINEMATOGRAPHER</span>
+                                </div>
+                            </div>
+                            <div class="card-body-area">
+                                <ul class="typing-target">
+                                    <li>Architecture Cinematography</li>
+                                    <li>3D Walkthroughs</li>
+                                    <li>Real Estate Visuals</li>
+                                    <li>Drone Videography</li>
+                                    <li>Design Storytelling</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: Cisco Certified -->
+                    <div class="node-card card-cisco magenta-theme" data-node="cisco">
+                        <svg class="card-border-svg" width="100%" height="100%">
+                            <rect class="card-border-rect" x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="10" fill="none" stroke="#ff0055" stroke-width="1.5" />
+                        </svg>
+                        <div class="card-inner">
+                            <div class="card-header-area">
+                                <div class="card-icon cisco-icon">
+                                    <svg class="cisco-svg" viewBox="0 0 40 20" width="30" height="15" stroke="currentColor" stroke-width="2" fill="none">
+                                        <line x1="4" y1="16" x2="4" y2="10"></line>
+                                        <line x1="8" y1="16" x2="8" y2="6"></line>
+                                        <line x1="12" y1="16" x2="12" y2="8"></line>
+                                        <line x1="16" y1="16" x2="16" y2="4"></line>
+                                        <line x1="20" y1="16" x2="20" y2="4"></line>
+                                        <line x1="24" y1="16" x2="24" y2="8"></line>
+                                        <line x1="28" y1="16" x2="28" y2="6"></line>
+                                        <line x1="32" y1="16" x2="32" y2="10"></line>
+                                    </svg>
+                                </div>
+                                <div class="card-title">
+                                    <h3>CISCO CERTIFIED</h3>
+                                </div>
+                            </div>
+                            <div class="card-body-area">
+                                <ul class="typing-target">
+                                    <li>Networking Fundamentals</li>
+                                    <li>Cisco Routing & Switching</li>
+                                    <li>Network Security</li>
+                                    <li>Infrastructure Management</li>
+                                    <li>Best Practices</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 7: Cloud Operations -->
+                    <div class="node-card card-cloud blue-theme" data-node="cloud">
+                        <svg class="card-border-svg" width="100%" height="100%">
+                            <rect class="card-border-rect" x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="10" fill="none" stroke="#0066ff" stroke-width="1.5" />
+                        </svg>
+                        <div class="card-inner">
+                            <div class="card-header-area">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 15c.7-1.2 1-2.5.7-3.9-.5-2-2.4-3.5-4.5-3.5h-.7C16.1 4.8 13.5 3 10.5 3 7 3 4 5.5 3.1 9c-2 1-3.1 3.2-3.1 5.5C0 18 3 21 6.5 21h13c2.5 0 4.8-1.8 5.2-4.3-.1-.6-.2-1.2-.5-1.7z"></path><path d="M12 12v9M9 15l3-3 3 3"></path></svg>
+                                </div>
+                                <div class="card-title">
+                                    <h3>CLOUD OPERATIONS</h3>
+                                </div>
+                            </div>
+                            <div class="card-body-area">
+                                <ul class="typing-target">
+                                    <li>Cloud Management</li>
+                                    <li>AWS / Azure / GCP</li>
+                                    <li>Storage & Backup</li>
+                                    <li>Monitoring & Alerts</li>
+                                    <li>Scalability & Security</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 8: Problem Solver -->
+                    <div class="node-card card-solver green-theme" data-node="solver">
+                        <svg class="card-border-svg" width="100%" height="100%">
+                            <rect class="card-border-rect" x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="10" fill="none" stroke="#00ff66" stroke-width="1.5" />
+                        </svg>
+                        <div class="card-inner">
+                            <div class="card-header-area">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1 0-3.12 3 3 0 0 1 0-3.88 2.5 2.5 0 0 1 0-3.12A2.5 2.5 0 0 1 9.5 2z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 0-3.12 3 3 0 0 0 0-3.88 2.5 2.5 0 0 0 0-3.12A2.5 2.5 0 0 0 14.5 2z"></path></svg>
+                                </div>
+                                <div class="card-title">
+                                    <h3>PROBLEM SOLVER</h3>
+                                </div>
+                            </div>
+                            <div class="card-body-area">
+                                <ul class="typing-target">
+                                    <li>Analytical Thinking</li>
+                                    <li>Creative Solutions</li>
+                                    <li>Debug & Optimize</li>
+                                    <li>Adapt & Overcome</li>
+                                    <li>Deliver Results</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 9: DevOps Engineer -->
+                    <div class="node-card card-devops purple-theme" data-node="devops">
+                        <svg class="card-border-svg" width="100%" height="100%">
+                            <rect class="card-border-rect" x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="10" fill="none" stroke="#a855f7" stroke-width="1.5" />
+                        </svg>
+                        <div class="card-inner">
+                            <div class="card-header-area">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"></path></svg>
+                                </div>
+                                <div class="card-title">
+                                    <h3>DEVOPS ENGINEER</h3>
+                                </div>
+                            </div>
+                            <div class="card-body-area">
+                                <ul class="typing-target">
+                                    <li>CI/CD Pipelines</li>
+                                    <li>Automation</li>
+                                    <li>Infrastructure as Code</li>
+                                    <li>Docker & Kubernetes</li>
+                                    <li>Monitoring & Logging</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="hud-sidebar right">
+                <!-- System Info Panel -->
+                <div class="hud-panel system-info-panel">
+                    <div class="panel-header">SYSTEM INFO</div>
+                    <div class="panel-body flex-row">
+                        <div class="sys-text">
+                            <div class="info-row"><span class="label">LOCATION:</span> <span class="val">SRI LANKA</span></div>
+                            <div class="info-row"><span class="label">FOCUS:</span> <span class="val text-glow-green">INNOVATION</span></div>
+                            <div class="info-row"><span class="label">BUILD:</span> <span class="val">1.0.0</span></div>
+                            <div class="info-row"><span class="label">UPTIME:</span> <span class="val">24/7</span></div>
+                            <div class="info-row"><span class="label">PASSION:</span> <span class="val text-glow-pink">LIMITLESS</span></div>
+                        </div>
+                        <div class="sys-map">
+                            <svg class="world-map-svg" viewBox="0 0 200 100">
+                                <circle cx="40" cy="30" r="1.5" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="50" cy="35" r="1" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="45" cy="40" r="1.5" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="80" cy="25" r="2" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="90" cy="30" r="1" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="85" cy="45" r="1" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="100" cy="35" r="1.5" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="120" cy="40" r="2" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="140" cy="30" r="1.5" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="150" cy="50" r="1.5" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="170" cy="25" r="2" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="180" cy="45" r="1" fill="#00ff66" opacity="0.4"/>
+                                <circle cx="190" cy="30" r="1.5" fill="#00ff66" opacity="0.4"/>
+                                <circle class="map-node-pulse" cx="132" cy="55" r="2.5" fill="#ff007f" filter="url(#glow-pink)"/>
+                                <circle class="map-node-ring" cx="132" cy="55" r="6" fill="none" stroke="#ff007f" stroke-width="0.5"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill Matrix Panel -->
+                <div class="hud-panel skill-matrix-panel">
+                    <div class="panel-header">SKILL MATRIX</div>
+                    <div class="panel-body">
+                        <div class="matrix-row" data-percent="100">
+                            <span class="matrix-label">CREATIVITY</span>
+                            <div class="matrix-bar-container">
+                                <div class="matrix-bar bg-glow-green" style="width: 0%;"></div>
+                            </div>
+                            <span class="matrix-val">100%</span>
+                        </div>
+                        <div class="matrix-row" data-percent="100">
+                            <span class="matrix-label">TECHNICAL</span>
+                            <div class="matrix-bar-container">
+                                <div class="matrix-bar bg-glow-green" style="width: 0%;"></div>
+                            </div>
+                            <span class="matrix-val">100%</span>
+                        </div>
+                        <div class="matrix-row" data-percent="95">
+                            <span class="matrix-label">COMMUNICATION</span>
+                            <div class="matrix-bar-container">
+                                <div class="matrix-bar bg-glow-green" style="width: 0%;"></div>
+                            </div>
+                            <span class="matrix-val">95%</span>
+                        </div>
+                        <div class="matrix-row" data-percent="90">
+                            <span class="matrix-label">LEADERSHIP</span>
+                            <div class="matrix-bar-container">
+                                <div class="matrix-bar bg-glow-green" style="width: 0%;"></div>
+                            </div>
+                            <span class="matrix-val">90%</span>
+                        </div>
+                        <div class="matrix-row" data-percent="100">
+                            <span class="matrix-label">PROBLEM SOLVING</span>
+                            <div class="matrix-bar-container">
+                                <div class="matrix-bar bg-glow-green" style="width: 0%;"></div>
+                            </div>
+                            <span class="matrix-val">100%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Scan Panel -->
+                <div class="hud-panel system-scan-panel">
+                    <div class="panel-header">SYSTEM SCAN</div>
+                    <div class="panel-body scan-list">
+                        <div class="scan-row"><span class="scan-label">PHOTOGRAPHY</span> <span class="scan-status pending">[ WAIT ]</span></div>
+                        <div class="scan-row"><span class="scan-label">VIDEOGRAPHY</span> <span class="scan-status pending">[ WAIT ]</span></div>
+                        <div class="scan-row"><span class="scan-label">ENGINEERING</span> <span class="scan-status pending">[ WAIT ]</span></div>
+                        <div class="scan-row"><span class="scan-label">NETWORKING</span> <span class="scan-status pending">[ WAIT ]</span></div>
+                        <div class="scan-row"><span class="scan-label">DEVOPS</span> <span class="scan-status pending">[ WAIT ]</span></div>
+                        <div class="scan-row"><span class="scan-label">CLOUD</span> <span class="scan-status pending">[ WAIT ]</span></div>
+                        <div class="scan-row"><span class="scan-label">CERTIFICATIONS</span> <span class="scan-status pending">[ WAIT ]</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="outro">
         <h1>Thank you for visiting!</h1>
     </section>
